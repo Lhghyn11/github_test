@@ -1,4 +1,21 @@
 students = []
+import json
+def load_students():
+    global students
+    try:
+        with open("students.json","r") as file:
+            students = json.load(file)
+    except:
+        studens = []
+        print("没有找到数据文件，创建新的学生列表")
+        
+    print("当前学生数据：")
+    print(students)
+
+def save_students():
+    with open("students.json","w") as file:
+        json.dump(students,file)
+
 def add_student():
     name = input("请输入姓名：")
     age = int(input("请输入年龄："))
@@ -34,6 +51,7 @@ def update_student():
             print("修改成功")
             break
 
+load_students()
 while True:
     print("======学生管理系统======")
     print("1.添加学生")
@@ -46,17 +64,21 @@ while True:
 
     if choice == "1":
         add_student()
+        save_students()
 
     elif choice == "2":
         show_students()
 
     elif choice == "3":
         delete_student()
+        save_students()
 
     elif choice == "4":
         update_student()
+        save_students()
 
     elif choice == "5":
+        save_students()
         break
 
     else:
