@@ -38,7 +38,7 @@ def delete_student():
         if student["name"] == name:
             students.remove(student)
             print("删除成功")
-            break
+            break #找到目标后停止循环，没找到还会继续
         else:
             print("没有找到该学生")
 
