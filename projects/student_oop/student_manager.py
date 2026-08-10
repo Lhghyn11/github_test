@@ -77,7 +77,9 @@ class StudentManager:
 
     def show_students(self):
         for student in self.students:
-            print(f"姓名：{student.name} 年龄：{student.age} 成绩：{student.score}")
+            #print(f"姓名：{student.name} 年龄：{student.age} 成绩：{student.score}")
+            #student.show_info()
+            print(student.show_info())
 
 
     def delete_student(self):
@@ -109,9 +111,14 @@ class StudentManager:
                     return False
                 
                 #student["score"] = score
-                student.score = score
-                print("修改成功")
-                return True
+                #student.score = score
+                #student.update_score(score)
+                result = student.update_score(score)
+                if result:
+                    print("修改成功")
+                    return True
+                else:    
+                    return False
             
         print("没有找到该学生")
 
