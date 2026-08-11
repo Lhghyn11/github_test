@@ -1,4 +1,5 @@
 import json
+from json import JSONDecodeError#文件被改坏，程序停止
 
 from models.student import Student
 
@@ -9,11 +10,13 @@ class StudentManager:
 
     def load_students(self):
     #global students
+        self.students = []#读取前清空student
 
         try:
             with open("data/students.json", "r") as file:
                 #self.students = json.load(file)
                 data = json.load(file)
+        
                 for item in data:
                     student = Student(
                         item["name"],
@@ -21,14 +24,15 @@ class StudentManager:
                         item["score"]
                     )
                     self.students.append(student)
-
-
                 print("读取成功")
 
         except FileNotFoundError:
-            self.students = []
-
+            #self.students = []
             print("没有找到数据文件")
+
+        except JSONDecodeError:
+            #self.students = []
+            print("数据文件格式错误")
 
 
     def save_students(self):
@@ -52,12 +56,23 @@ class StudentManager:
     def add_student(self):
 
         name = input("请输入姓名：")
+
+        if name.strip() == "":
+            print("姓名不能为空")
+            return False
+        
         try:
             age = int(input("请输入年龄："))
+            #score = int(input("请输入成绩："))
+
+            if age <= 0:
+                print("年龄必须大于0")
+                return False
+
             score = int(input("请输入成绩："))
+
         except ValueError:
             print("年龄和成绩必须输入数字")
-
             return False
 
         #student = {
@@ -66,7 +81,12 @@ class StudentManager:
         #    "score": score
         #}这是字典
 
-        student = Student(name,age,score)#这是Student对象
+        try:
+            student = Student(name,age,score)#这是Student对象
+
+        except ValueError as e:
+            print(e)
+            return False
 
         self.students.append(student)#等价于manager.students.append(student)
 
@@ -113,12 +133,17 @@ class StudentManager:
                 #student["score"] = score
                 #student.score = score
                 #student.update_score(score)
-                result = student.update_score(score)
-                if result:
-                    print("修改成功")
-                    return True
-                else:    
+                #result = student.update_score(score)
+                try:
+                    student.update_score(score)
+
+                except ValueError as e:
+                    print(e)
                     return False
+                
+                print("修改成功")
+                return True
+
             
         print("没有找到该学生")
 
