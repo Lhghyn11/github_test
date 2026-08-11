@@ -1,6 +1,6 @@
 import json
 
-from student import Student
+from models.student import Student
 
 class StudentManager:
 
@@ -11,7 +11,7 @@ class StudentManager:
     #global students
 
         try:
-            with open("students.json", "r") as file:
+            with open("data/students.json", "r") as file:
                 #self.students = json.load(file)
                 data = json.load(file)
                 for item in data:
@@ -43,7 +43,7 @@ class StudentManager:
                 }
             )
 
-        with open("students.json", "w") as file:
+        with open("data/students.json", "w") as file:
             json.dump(data, file)
 
         print("保存完成")

@@ -1,4 +1,4 @@
-from student_manager import StudentManager
+from managers.student_manager import StudentManager
 
 manager = StudentManager()#创建一个SM对象，会自动调用init，现在manager.students就是[]
 
@@ -7,7 +7,7 @@ manager.load_students()
 while True:
 
     print("======学生管理系统======")
-    print("1.添加学生")4
+    print("1.添加学生")
     
     print("2.查看学生")
     print("3.删除学生")
