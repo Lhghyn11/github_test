@@ -1,8 +1,10 @@
+from exceptions.student_error import StudentError
+
 def check_score(score):#负责检查
 
     if score < 0 or score > 100:
 
-        raise ValueError("成绩范围错误")
+        raise StudentError("成绩范围错误")
 
     return True
 

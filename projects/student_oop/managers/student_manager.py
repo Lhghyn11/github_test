@@ -5,6 +5,8 @@ from models.student import Student#里面有check
 
 from utils.input_helper import input_int
 
+from exceptions.student_error import StudentError
+
 class StudentManager:
 
     def __init__(self):
@@ -80,9 +82,9 @@ class StudentManager:
         try:
             student = Student(name,age,score)#这是Student对象
 
-        except ValueError as e:
+        except StudentError as e:
             print(e)
-            return False
+            return False#告诉调用者，这次操作失败了
 
         self.students.append(student)#等价于manager.students.append(student)
 
@@ -119,12 +121,13 @@ class StudentManager:
             #if student["name"] == name:
             if student.name == name:
 
-                try:
-                    score = int(input("请输入新的成绩："))
+                #try:
+                    #score = int(input("请输入新的成绩："))
 
-                except ValueError:
-                    print("成绩必须输入数字")
-                    return False
+                #except ValueError:
+                    #print("成绩必须输入数字")
+                    #return False因为已经调用input_put了，不用自己处理
+                score = input_int("请输入新的成绩：")
                 
                 #student["score"] = score
                 #student.score = score
@@ -133,7 +136,8 @@ class StudentManager:
                 try:
                     student.update_score(score)
 
-                except ValueError as e:
+                #except ValueError as e:
+                except StudentError as e:
                     print(e)
                     return False
                 
