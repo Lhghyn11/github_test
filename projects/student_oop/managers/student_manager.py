@@ -1,7 +1,9 @@
 import json
 from json import JSONDecodeError#文件被改坏，程序停止
 
-from models.student import Student
+from models.student import Student#里面有check
+
+from utils.input_helper import input_int
 
 class StudentManager:
 
@@ -57,24 +59,18 @@ class StudentManager:
 
         name = input("请输入姓名：")
 
-        if name.strip() == "":
-            print("姓名不能为空")
-            return False
+        #if name.strip() == "":
+            #print("姓名不能为空")
+            #return False#已经接入了check_name
         
-        try:
-            age = int(input("请输入年龄："))
-            #score = int(input("请输入成绩："))
+        age = input_int("请输入年龄：")#以前通过try自己处理，现在交给input_put
 
-            if age <= 0:
-                print("年龄必须大于0")
-                return False
+        score = input_int("请输入成绩：")   
 
-            score = int(input("请输入成绩："))
-
-        except ValueError:
-            print("年龄和成绩必须输入数字")
-            return False
-
+        #if age <= 0:
+            #print("年龄必须大于0")
+            #return False
+            
         #student = {
         #    "name": name,
         #    "age": age,

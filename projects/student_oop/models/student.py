@@ -1,16 +1,22 @@
+from utils.validator import check_score, check_age, check_name
+
 class Student:
 
     def __init__(self, name, age, score):
 
+        #if score < 0 or score > 100:
+            #raise ValueError("成绩范围错误")
+        check_name(name)#为什么不放在manager里，因为所有窗口都会经过Student，这是对象保护自己的数据
+
+        check_age(age)
+
+        check_score(score)
+
         self.name = name
         self.age = age
-
-        if score < 0 or score > 100:
-            raise ValueError("成绩范围错误")
-
         self.__score = score
 
-    @property
+    @property#增加读取接口
     def score(self):
 
         return self.__score
@@ -22,10 +28,11 @@ class Student:
     
     def update_score(self,score):
 
-        if score < 0 or score > 100:
+        #if score < 0 or score > 100:
             #print("成绩范围错误")
-            raise ValueError("成绩范围错误")
+            #raise ValueError("成绩范围错误")
             #return False
+        check_score(score)
         
         self.__score = score#私有属性
 
