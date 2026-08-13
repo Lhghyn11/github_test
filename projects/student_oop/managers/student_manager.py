@@ -7,54 +7,61 @@ from utils.input_helper import input_int
 
 from exceptions.student_error import StudentError
 
+from database.db import Database
+
 class StudentManager:
 
     def __init__(self):
         self.students = []
+        self.db = Database()#新增sqlite
+        self.db.create_table()#新增
 
     def load_students(self):
     #global students
-        self.students = []#读取前清空student
+        #self.students = []#读取前清空student
 
-        try:
-            with open("data/students.json", "r") as file:
+        self.students = self.db.get_students()#sqlite
+
+        print("从数据库读取成功")
+
+        #try:没有意义现在不是json文件读取了，这是针对json的try
+            #with open("data/students.json", "r") as file:
                 #self.students = json.load(file)
-                data = json.load(file)
-        
-                for item in data:
-                    student = Student(
-                        item["name"],
-                        item["age"],
-                        item["score"]
-                    )
-                    self.students.append(student)
-                print("读取成功")
+                #data = json.load(file)
+                #for item in data:
+                 #   student = Student(
+                  #      item["name"],
+                   #     item["age"],
+                   #     item["score"]
+                    #)
+                    #self.students.append(student)
+                #print("读取成功")
 
-        except FileNotFoundError:
+        #except FileNotFoundError:
             #self.students = []
-            print("没有找到数据文件")
+            #print("没有找到数据文件")
 
-        except JSONDecodeError:
+        #except JSONDecodeError:
             #self.students = []
-            print("数据文件格式错误")
+            #print("数据文件格式错误")
 
 
-    def save_students(self):
+    #def save_students(self):以前负责studentmanager到students.json现在已经完全没用了
     #print("保存的数据：", students)
-        data = []
-        for student in self.students:
-            data.append(
-                {
-                    "name":student.name,
-                    "age":student.age,
-                    "score":student.score
-                }
-            )
+        #data = []
+        #for student in self.students:
+            #data.append(
+                #{
+                 #   "name":student.name,
+                  #  "age":student.age,
+                  #  "score":student.score
+                #}
+            #)
 
-        with open("data/students.json", "w") as file:
-            json.dump(data, file)
+        #with open("data/students.json", "w") as file:
+         #   json.dump(data, file)
 
-        print("保存完成")
+        #print("保存完成")
 
 
     def add_student(self):
@@ -86,6 +93,8 @@ class StudentManager:
             print(e)
             return False#告诉调用者，这次操作失败了
 
+        self.db.add_student(student)#负责：student对象→sqlite
+
         self.students.append(student)#等价于manager.students.append(student)
 
         print("添加成功")
@@ -106,6 +115,9 @@ class StudentManager:
         for student in self.students:
             #if student["name"] == name:
             if student.name == name:
+
+                self.db.delete_student(student.id)#核心就是增加这一句
+
                 self.students.remove(student)
                 print("删除成功")
                 return True
@@ -140,6 +152,8 @@ class StudentManager:
                 except StudentError as e:
                     print(e)
                     return False
+                
+                self.db.update_student(student.id, score)
                 
                 print("修改成功")
                 return True

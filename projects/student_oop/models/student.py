@@ -2,7 +2,7 @@ from utils.validator import check_score, check_age, check_name
 
 class Student:
 
-    def __init__(self, name, age, score):
+    def __init__(self, name, age, score,student_id=None):
 
         #if score < 0 or score > 100:
             #raise ValueError("成绩范围错误")
@@ -12,13 +12,25 @@ class Student:
 
         check_score(score)
 
-        self.name = name
-        self.age = age
+        self.__id = student_id
+        self.__name = name
+        self.__age = age
         self.__score = score
 
     @property#增加读取接口
-    def score(self):
+    def id(self):
+        return self.__id
 
+    @property#增加读取接口
+    def name(self):
+        return self.__name
+
+    @property#增加读取接口
+    def age(self):
+        return self.__age
+
+    @property#增加读取接口
+    def score(self):
         return self.__score
 
 
