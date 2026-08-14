@@ -1,5 +1,5 @@
-import json
-from json import JSONDecodeError#文件被改坏，程序停止
+#import json现在不用json了
+#from json import JSONDecodeError#文件被改坏，程序停止
 
 from models.student import Student#里面有check
 
@@ -9,20 +9,29 @@ from exceptions.student_error import StudentError
 
 from database.db import Database
 
+from repositories.student_repository import StudentRepository
+
+from utils.logger import logger#日志
+
 class StudentManager:
 
-    def __init__(self):
+    def __init__(self,repository):
         self.students = []
-        self.db = Database()#新增sqlite
-        self.db.create_table()#新增
+        #self.db = Database()#新增sqlite
+        #self.db = db#database不由我创建，别人给我
+        #self.db.create_table()#创建数据表
+        self.repository = repository#manager以后只认识学生仓库，不认识sqlite
 
     def load_students(self):
+        print("进入load_students")#测试
     #global students
         #self.students = []#读取前清空student
 
-        self.students = self.db.get_students()#sqlite
+       #self.students = self.db.get_students()#sqlite
+        self.students = self.repository.get_all_students()
 
         print("从数据库读取成功")
+        print("学生数量：", len(self.students))#测试
 
         #try:没有意义现在不是json文件读取了，这是针对json的try
             #with open("data/students.json", "r") as file:
@@ -93,10 +102,13 @@ class StudentManager:
             print(e)
             return False#告诉调用者，这次操作失败了
 
-        self.db.add_student(student)#负责：student对象→sqlite
+        #self.db.add_student(student)#负责：student对象→sqlite
+        self.repository.add_student(student)
 
         self.students.append(student)#等价于manager.students.append(student)
 
+        #print("添加成功")
+        logger.info(f"添加学生:{student.name}")
         print("添加成功")
 
         return True
@@ -116,10 +128,14 @@ class StudentManager:
             #if student["name"] == name:
             if student.name == name:
 
-                self.db.delete_student(student.id)#核心就是增加这一句
+                #self.db.delete_student(student.id)#核心就是增加这一句
+                self.repository.delete_student(student.id)
 
                 self.students.remove(student)
+                #print("删除成功")
+                logger.info(f"删除学生:{student.name}")
                 print("删除成功")
+                
                 return True
             
         print("没有找到该学生")
@@ -153,9 +169,13 @@ class StudentManager:
                     print(e)
                     return False
                 
-                self.db.update_student(student.id, score)
+                #self.db.update_student(student.id, score)
+                self.repository.update_student(student.id,score)
                 
+                #print("修改成功")
+                logger.info(f"修改学生成绩:{student.name}->{score}")
                 print("修改成功")
+
                 return True
 
             

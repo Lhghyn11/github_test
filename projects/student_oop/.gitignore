@@ -2,3 +2,10 @@ __pycache__/
 #忽略所有叫__pycache__的文件夹
 *.pyc
 #忽略所有.pyc文件。*代表任意名字
+students.db
+#数据库属于运行数据。
+logs/
+#原因：日志运行产生。应该放进：.gitignore
+utils/test_logger.py
+database/test_database.py
+#这个是测试文件。

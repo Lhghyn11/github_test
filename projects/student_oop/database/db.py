@@ -5,8 +5,10 @@ from models.student import Student
 class Database:
 
     def __init__(self):
-        self.conn = sqlite3.connect("students.db")
+        self.conn = sqlite3.connect("students.db")#连接数据库
         self.cursor = self.conn.cursor()
+
+        self.create_table()#创建数据表
 
 
 #创建表的方法
@@ -41,6 +43,8 @@ class Database:
         )
 
         rows = self.cursor.fetchall()
+
+        print("数据库原始数据：", rows)#
 
         students = []
 

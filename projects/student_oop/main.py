@@ -1,8 +1,19 @@
+from database.db import Database
+
+from repositories.student_repository import StudentRepository
+
 from managers.student_manager import StudentManager
 
-manager = StudentManager()#创建一个SM对象，会自动调用init，现在manager.students就是[]
+#manager = StudentManager()#创建一个SM对象，会自动调用init，现在manager.students就是[]
 
-manager.load_students()#加载学生数据
+db = Database()
+#manager.load_students()#加载学生数据
+#manager = StudentManager(db)#程序组装入口
+repository = StudentRepository(db)
+
+manager = StudentManager(repository)
+
+manager.load_students()
 
 while True:
 
@@ -24,7 +35,7 @@ while True:
 
 
     elif choice == "2":
-        manager.show_students()这是给students.json准备的
+        manager.show_students()#这是给students.json准备的
 
 
     elif choice == "3":
