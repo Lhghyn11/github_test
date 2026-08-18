@@ -9,7 +9,7 @@ print(df)
 data = df.to_numpy()#把pandas数据转成numpy
 
 
-tensor = torch.tensor(data)#把numpy数据转成pytorch
+tensor = torch.tensor(data)#创建tensor
 
 print(tensor)
 print(type(tensor))
